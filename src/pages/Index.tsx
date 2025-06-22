@@ -69,7 +69,7 @@ const AnimatedBackground = () => {
       </div>
 
       {/* CSS Keyframes */}
-      <style jsx>{`
+      <style>{`
         @keyframes float1 {
           0%, 100% { transform: translate(0, 0) scale(1); }
           25% { transform: translate(30px, -30px) scale(1.1); }
@@ -297,11 +297,11 @@ ${title} is an essential topic that deserves careful consideration. By following
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Transform your ideas into engaging blog posts with the power of AI
           </p>
-          <div className="flex items-center justify-center space-x-4 mt-4">
+          <div className="flex items-center justify-center space-x-4 -4">
             <Badge variant="secondary" className="bg-purple-100 text-purple-700">
               <Zap className="w-3 h-3 mr-1" />
               AI-Powered
-            </Badge>
+            </Badge>mt
             <Badge variant="secondary" className="bg-cyan-100 text-cyan-700">
               Fast Generation
             </Badge>
