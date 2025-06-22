@@ -1,8 +1,5 @@
-
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,50 +10,108 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Sparkles, PenTool, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-// 3D Background Component
+// CSS-based Animated Background Component
 const AnimatedBackground = () => {
   return (
-    <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.3} />
-          <directionalLight position={[10, 10, 5]} intensity={0.5} />
-          <Sphere args={[1, 100, 200]} scale={2.5} position={[-4, -2, -3]}>
-            <MeshDistortMaterial
-              color="#8B5CF6"
-              attach="material"
-              distort={0.3}
-              speed={1.5}
-              roughness={0.2}
-              transparent
-              opacity={0.1}
-            />
-          </Sphere>
-          <Sphere args={[1, 100, 200]} scale={2} position={[4, 2, -2]}>
-            <MeshDistortMaterial
-              color="#06B6D4"
-              attach="material"
-              distort={0.4}
-              speed={2}
-              roughness={0.1}
-              transparent
-              opacity={0.1}
-            />
-          </Sphere>
-          <Sphere args={[1, 100, 200]} scale={1.5} position={[0, -4, -1]}>
-            <MeshDistortMaterial
-              color="#F59E0B"
-              attach="material"
-              distort={0.2}
-              speed={1}
-              roughness={0.3}
-              transparent
-              opacity={0.08}
-            />
-          </Sphere>
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-        </Suspense>
-      </Canvas>
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      {/* Main gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-cyan-50" />
+      
+      {/* Animated gradient orbs */}
+      <div className="absolute inset-0">
+        {/* Purple orb */}
+        <div 
+          className="absolute w-96 h-96 rounded-full opacity-20 animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%)',
+            left: '-10%',
+            top: '20%',
+            animation: 'float1 20s ease-in-out infinite'
+          }}
+        />
+        
+        {/* Cyan orb */}
+        <div 
+          className="absolute w-80 h-80 rounded-full opacity-20"
+          style={{
+            background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, rgba(6, 182, 212, 0.1) 40%, transparent 70%)',
+            right: '-5%',
+            top: '10%',
+            animation: 'float2 25s ease-in-out infinite'
+          }}
+        />
+        
+        {/* Yellow orb */}
+        <div 
+          className="absolute w-72 h-72 rounded-full opacity-15"
+          style={{
+            background: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, rgba(245, 158, 11, 0.1) 40%, transparent 70%)',
+            left: '20%',
+            bottom: '10%',
+            animation: 'float3 30s ease-in-out infinite'
+          }}
+        />
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-purple-300 rounded-full opacity-30"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `particle${(i % 3) + 1} ${15 + Math.random() * 10}s linear infinite`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* CSS Keyframes */}
+      <style jsx>{`
+        @keyframes float1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(30px, -30px) scale(1.1); }
+          50% { transform: translate(-20px, 20px) scale(0.9); }
+          75% { transform: translate(20px, -10px) scale(1.05); }
+        }
+        
+        @keyframes float2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(-40px, 25px) scale(1.1); }
+          66% { transform: translate(25px, -30px) scale(0.95); }
+        }
+        
+        @keyframes float3 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          20% { transform: translate(15px, -25px) scale(1.05); }
+          40% { transform: translate(-25px, 15px) scale(0.9); }
+          60% { transform: translate(30px, 10px) scale(1.1); }
+          80% { transform: translate(-15px, -20px) scale(0.95); }
+        }
+        
+        @keyframes particle1 {
+          0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+          10% { opacity: 0.3; }
+          90% { opacity: 0.3; }
+          100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+        }
+        
+        @keyframes particle2 {
+          0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+          15% { opacity: 0.4; }
+          85% { opacity: 0.4; }
+          100% { transform: translateY(-10vh) translateX(-30px); opacity: 0; }
+        }
+        
+        @keyframes particle3 {
+          0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+          20% { opacity: 0.2; }
+          80% { opacity: 0.2; }
+          100% { transform: translateY(-10vh) translateX(20px); opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 };
